@@ -33,11 +33,11 @@ head(balance)
 Now that we have the balances and the BTC price, we load the exchangeratesr package and use the eurusds function to import historical values of EURUSD exchange rates.
 
 ```{r, fig.show = 'hold'}
-
+library(exchangeratesr)
 rates <- eurusds(Sys.Date() - 45, Sys.Date())
 
 setkey(balance, date)
-setkey(fx, date)
+setkey(rates, date)
 
 balance <- rates[balance, roll = TRUE]
 balance[, eur_volume := usd_volume * btcusd * eurusd,]
@@ -46,16 +46,17 @@ head(balance)
 
 Finally, visualize the values for the last 45 days and use the `eur` function to format EUR values.
 
-```{r, fig.show='hold'}
+
+```{r, fig.show = 'hold'}
 library(ggplot2)
+
 ggplot(data = balance, aes(x = date, y = eur_volume)) +
   geom_line(color = 'blue') +
-  scale_y_continuous(labels = eur) +
+  scale_y_continuous() +
   theme_bw() +
   labs(title = 'Total BTC value in the last 45 days',
-       x = 'Value in EUR',
-       y = 'date')
+       x = 'date',
+       y = 'value in EUR')
 ```
-
 
 

@@ -16,9 +16,9 @@ integer
 Returns value withouth eur curreny sign
 }
 \examples{
-uneur(eur(1000))
 uneur('€4,242.42')
 uneur('-€4,242')
+uneur(eur(1000))
 }
 \seealso{
 eur()
