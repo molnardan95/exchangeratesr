@@ -15,5 +15,3 @@ eurusd <- function(decimals = 3) {
   round(exchange_rates$rates$EUR, decimals)
 }
 
-
-eurusd(7)

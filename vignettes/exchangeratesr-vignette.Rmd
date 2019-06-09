@@ -1,0 +1,61 @@
+---
+title: "Usage of eurusds and eur functions from exchangeratesr"
+author: "Daniel Molnar"
+date: 06-09-2019
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{exchangeratesr-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Usage of "exchangeratesr" - vignette
+
+This vignette contains examples showing the usage of the `eur` and `eurusds` functions form the `exchangeratesr` package.
+In this example, my main goal is to visualize bitcoin prices and the amount sold each day using the `binancer` and `ggplot2` packages.
+
+```{r, fig.show = 'hold'}
+library(binancer)
+library(data.table)
+coin_prices <- binance_klines('BTCUSDT', interval = '1d', limit = 45)
+
+balance <- coin_prices[, .(date = as.Date(close_time), btcusd = close, usd_volume = volume)]
+head(balance)
+```
+
+Now that we have the balances and the BTC price, we load the exchangeratesr package and use the eurusds function to import historical values of EURUSD exchange rates.
+
+```{r, fig.show = 'hold'}
+
+rates <- eurusds(Sys.Date() - 45, Sys.Date())
+
+setkey(balance, date)
+setkey(fx, date)
+
+balance <- rates[balance, roll = TRUE]
+balance[, eur_volume := usd_volume * btcusd * eurusd,]
+head(balance)
+```
+
+Finally, visualize the values for the last 45 days and use the `eur` function to format EUR values.
+
+```{r, fig.show='hold'}
+library(ggplot2)
+ggplot(data = balance, aes(x = date, y = eur_volume)) +
+  geom_line(color = 'blue') +
+  scale_y_continuous(labels = eur) +
+  theme_bw() +
+  labs(title = 'Total BTC value in the last 45 days',
+       x = 'Value in EUR',
+       y = 'date')
+```
+
+
+
