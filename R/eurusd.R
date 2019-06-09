@@ -16,3 +16,4 @@ eurusd <- function(decimals = 3) {
 }
 
 
+eurusd(7)

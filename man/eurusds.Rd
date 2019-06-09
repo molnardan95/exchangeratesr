@@ -21,5 +21,5 @@ Returns the historical price of 1 USD in EUR
 }
 \examples{
 eurusds('2019-01-01', '2019-02-01')
-eurusd('2019-01-01', '2019-02-01', 5)
+eurusds('2019-01-01', '2019-02-01', 5)
 }

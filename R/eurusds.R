@@ -11,7 +11,7 @@
 #' @importFrom httr content
 #' @examples
 #' eurusds('2019-01-01', '2019-02-01')
-#' eurusd('2019-01-01', '2019-02-01', 5)
+#' eurusds('2019-01-01', '2019-02-01', 5)
 
 
 eurusds <- function(date_from, date_to, decimals = 3) {
